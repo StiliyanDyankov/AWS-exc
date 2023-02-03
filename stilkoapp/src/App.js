@@ -1,21 +1,28 @@
 import photo from "./hehe.png";
 import "./main.css";
 import React from "react";
+import "@aws-amplify/ui-react/styles.css";
+import {
+  withAuthenticator,
+  Button,
+  Heading,
+  Image,
+  View,
+  Card,
+} from "@aws-amplify/ui-react";
 
-// function App() {
-//   return (
-//     <div className="main-wrap">
-//       <span className="obich">
-//         Obicham te krisi!
-//       </span>
-//       <div className="img">
-//         <img src={photo} alt="us"></img>
-//       </div>
-//     </div>
-//   );
-// }
+function Auth({ signOut }) {
+  return (
+    <View className="App">
+      <Card>
+        <Image src={photo} className="App-logo" alt="logo" />
+        <Heading level={1}>We now have Auth!</Heading>
+      </Card>
+      <Button onClick={signOut}>Sign Out</Button>
+    </View>
+  );
+}
 
-// export default App;
 
 function calculateTimeLeft() {
     const year = new Date().getFullYear();
@@ -30,11 +37,11 @@ function calculateTimeLeft() {
             seconds: Math.floor((difference / 1000) % 60),
         };
     }
-
+    
     return timeLeft;
-}
+  }
 
-export default function App() {
+function App({signOut}) {
     const [timeLeft, setTimeLeft] = React.useState(calculateTimeLeft());
 
     React.useEffect(() => {
@@ -51,9 +58,9 @@ export default function App() {
         if (!timeLeft[interval]) {
             return;
         }
-
+        
         return (
-            <React.Fragment>
+          <React.Fragment>
                 <span>
                     {timeLeft[interval]} {interval}{" "}
                 </span>
@@ -74,13 +81,18 @@ export default function App() {
                     </div>
                     <div className="vreme">
                         {timerComponents.length ? (
-                            timerComponents
+                          timerComponents
                         ) : (
                             <span>Time's up!</span>
                         )}
                     </div>
                 </div>
             </div>
+            <Auth
+              signOut={signOut}
+            />
         </div>
     );
-}
+  }
+
+  export default withAuthenticator(App);
